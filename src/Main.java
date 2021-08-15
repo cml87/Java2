@@ -1,10 +1,12 @@
 /*
-* - use clause 'throws' if the method throws checked exceptions, ie. those that are NOT subclasses of RuntimeException
-*   Exceptions being subclasses of RuntimeExceptions are called unchecked exceptions and are handled automatically
-*   by the JVM. But we can handle them if desired as well.
-*   RuntimeException is the superclass of all unchecked exceptions.
-*   With clause throws we specify reference types that are assignment compatible with the exceptions our method could
-*   throw.
+* - variables inside a method are private to the method, without the need of the private modifier, which actually
+*   is not allowed in this case, it would be incorrect.
+* - variables inside a method can be 'final'.
+* - a method cannot be nested inside a another method
+* - when a method runs, a space of memory called stack is allocated for all its needs, and is kept until the method exits
+* - Java doesn't support method parameters with default values intended to be used if we don't supply an argument in
+*  the a method call. For example, the following is not allowed
+*   public void foo (int a = 10) {...}
 *
 * */
 
