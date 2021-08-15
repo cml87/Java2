@@ -1,20 +1,10 @@
 /*
-* Functions, procedures, subroutines, methods : different names in different languages
-*
-* Classes and their members (methods and fields) can have different modifiers.
-* Access modifiers for methods: public, protected, private
-* Other modifiers for methods: abstract, static, final, synchronized, native, strictfp.
-* public: method callable from any class
-* private: only from inside same class
-* protected: from same package or subclasses in other packages
-* default (when nothing is specified) from same package
-*
-* - Void is not a type, so we cannot make cast to void.
-* - Method names have the same restrictions as for variables and class names
-* - 'parameters' is for methods definitions 'arguments' is for methods calls
-* - variables in method parameters are local to the method.
-* - a method parameter can be 'final' , which means it cannot be reassigned again in the method body
-*
+* - use clause 'throws' if the method throws checked exceptions, ie. those that are NOT subclasses of RuntimeException
+*   Exceptions being subclasses of RuntimeExceptions are called unchecked exceptions and are handled automatically
+*   by the JVM. But we can handle them if desired as well.
+*   RuntimeException is the superclass of all unchecked exceptions.
+*   With clause throws we specify reference types that are assignment compatible with the exceptions our method could
+*   throw.
 *
 * */
 
