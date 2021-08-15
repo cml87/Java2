@@ -1,12 +1,12 @@
 /*
-* - variables inside a method are private to the method, without the need of the private modifier, which actually
-*   is not allowed in this case, it would be incorrect.
-* - variables inside a method can be 'final'.
-* - a method cannot be nested inside a another method
-* - when a method runs, a space of memory called stack is allocated for all its needs, and is kept until the method exits
-* - Java doesn't support method parameters with default values intended to be used if we don't supply an argument in
-*  the a method call. For example, the following is not allowed
-*   public void foo (int a = 10) {...}
+* - static methods are called class methods. They are normally used to access static fields of their class,
+*   as these cannot be accessed from instance methods (non static methods).
+*
+*   Static, or class, methods cannot access non-static (or instance) members (fields and methods). They must use
+*   an object reference for for this. Similarly they cannot use the 'this' keyword as there is no instance for 'this'
+*   to refer to.
+*
+* - 'main' is just the method that a Java program executes my default.
 *
 * */
 
@@ -14,6 +14,7 @@
 class Myint {
 
     int x;
+    private static double num;
 
     public Myint() { //if a parametric constructor is defined for a class, the parameterless constructor will
         // no be included by default, so we need to write it
@@ -22,6 +23,24 @@ class Myint {
     public Myint(int x) {
         this.x = x;
     }
+
+    public void printHello(){
+        System.out.println("Hello");
+    }
+
+    static double getNum(){
+        //System.out.println("value of x is" + String.valueOf(x) );// not ok cuz x is non-static
+        //printHello(); //not ok, cuz method printHello() is non-static
+        return num;
+    }
+
+    static double getNum(Myint myint){
+        System.out.println("value of x is" + String.valueOf(myint.x) );// access non-static x field through an
+        // instance reference
+        myint.printHello(); // access non-static printHello() through an instance reference
+        return num;
+    }
+
 }
 
 
