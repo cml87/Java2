@@ -9,6 +9,9 @@
 * protected: from same package or subclasses in other packages
 * default (when nothing is specified) from same package
 *
+*  For abstract, static or final we just decide whether or not to use them, thus imposing some additional
+*  characteristics of the method. For example, a static vs a non-static method.
+*
 * - Void is not a type, so we cannot make cast to void.
 * - Method names have the same restrictions as for variables and class names
 * - 'parameters' is for methods definitions 'arguments' is for methods calls
