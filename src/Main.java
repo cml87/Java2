@@ -1,8 +1,7 @@
 /*
- * Java supports variable length arguments for methods, with the syntax "<type> ..." This is syntactic sugar though.
- * The compiler translates the parameter into an array of the corresponding type.
- * The variable length parameter must be the last defined in the parameters list of the method.
- *
+ * When arguments in a method invocation do not match the type of the corresponding parameter in the method definition,
+ * Java will try to make an implicit casting. If it succeeds, it will not complain at all and will execute the method.
+ * If it can't, for example because there would be some data lose, it will throw and exception at Runtime.
  *
  * */
 
@@ -31,48 +30,39 @@ class Myint {
 
 public class Main {
 
-    static void sumInts(int... intNums) {
+    public static int sum(int x, int y) { return x + y; }
 
-        // The argument will actually an array
-        System.out.println("Argument array size is: "+intNums.length);
-
-        int sum = 0;
-        for (int i : intNums) {
-            sum += i;
-        }
-        System.out.println("Sum is: " + sum);
-    }
-
-    static void sumIntsOffset(int offSet, int... intNums) {
-        int sum = 0;
-        for (int i : intNums) {
-            sum += i;
-        }
-        System.out.println("Sum is: " + (sum - offSet));
-    }
 
 
     public static void main(String[] args) {
 
-        // An array size in Java cannot be changed after creation, so we'll not be able
-        // to add new elements to the array
-        int[] array1 = {1, 2, 3};
-        int[] array2 = new int[]{4, 5, 6};
+        byte x = 1;
+        byte y = 2;
 
-        int[] arrayA = new int[2];
-        arrayA[0] = 4;
-        arrayA[1] = 5;
-        //arrayA[2] = 6; // RUNTIME ERROR!!! // ArrayIndexOutOfBoundException
+        int a = 2;
+        float b = 4.f;  // the f, or F, indicates the compiler to interpret this literal as a float
+        double c = 8.78; //or 8.78d or D
 
-        int[] array3 = new int[]{}; //we can create a zero lenght array
-        System.out.printf("Size of array3 is: %d\n\n", array3.length);
+        System.out.println("Sum of x and y is: "+sum(x,y)); //3
 
-        sumInts(array1);
-        sumInts(4, 6);
-        sumInts();  // an array of length 0 will be created inside the sumInt() method
+        // Runtime Error: "public static int sum(int x, int y) { return x + y; }"
+        //System.out.println("Sum of a and b is: "+sum(a,b));
 
-        System.out.println("Method with offset:");
-        sumIntsOffset(6, 1, 2, 3);
+
+        // Notice how expressions passed as arguments are first evaluated, from left to right, to get a value,
+        // and then that value is passed to the function. In the expression evaluation, variables' values can be
+        // changed !
+        x = 5;
+        System.out.println("Sum of x-=5 and x is: "+sum(x-=5,x)); // prints 0. In the first argument expression we make
+        // x==0 and pass that to the method. The second argument will then be zero. 0+0=0
+
+        x=6;
+        System.out.println("\"x-=9\" is: "+(x-=9)); // prints -3
+
+        x=6;
+        y=4;
+        //System.out.println("Sum of x/0 and y-=3 is: "+sum(x/0,y-=3)); //ArithmeticException when evaluating first
+        // argument expression. Second argument expression will not be evaluated, thus 'y' will not be changed
 
     }
 
