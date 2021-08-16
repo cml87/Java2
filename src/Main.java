@@ -1,7 +1,5 @@
 /*
- * Java supports variable length arguments for methods, with the syntax "<type> ..." This is syntactic sugar though.
- * The compiler translates the parameter into an array of the corresponding type.
- * The variable length parameter must be the last defined in the parameters list of the method.
+ * We pass an array to a method by passing its identifier.
  *
  *
  * */
@@ -43,14 +41,17 @@ public class Main {
         System.out.println("Sum is: " + sum);
     }
 
-    static void sumIntsOffset(int offSet, int... intNums) {
+    static void meanInts(int[] intNums) {
+
+        // The argument will actually an array
+        System.out.println("Argument array size is: "+intNums.length);
+
         int sum = 0;
         for (int i : intNums) {
             sum += i;
         }
-        System.out.println("Sum is: " + (sum - offSet));
+        System.out.println("Mean is: " + sum/intNums.length);
     }
-
 
     public static void main(String[] args) {
 
@@ -65,14 +66,11 @@ public class Main {
         //arrayA[2] = 6; // RUNTIME ERROR!!! // ArrayIndexOutOfBoundException
 
         int[] array3 = new int[]{}; //we can create a zero lenght array
-        System.out.printf("Size of array3 is: %d\n\n", array3.length);
 
-        sumInts(array1);
-        sumInts(4, 6);
-        sumInts();  // an array of length 0 will be created inside the sumInt() method
+        //passing an array to a method
+        meanInts(array1);
 
-        System.out.println("Method with offset:");
-        sumIntsOffset(6, 1, 2, 3);
+
 
     }
 
