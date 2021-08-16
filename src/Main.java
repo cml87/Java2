@@ -1,6 +1,6 @@
 /*
- * We pass an array to a method by passing its identifier.
- *
+ * In Java multidimensional arrays can be irregular, ie. the size of each dimension can be different.
+ *  We pass such array to a method by passing its identifier, as for 1D arrays
  *
  * */
 
@@ -29,49 +29,28 @@ class Myint {
 
 public class Main {
 
-    static void sumInts(int... intNums) {
+    static void array2Dmax(int[][] data) {
 
-        // The argument will actually an array
-        System.out.println("Argument array size is: "+intNums.length);
-
-        int sum = 0;
-        for (int i : intNums) {
-            sum += i;
+        int max = 0;
+        for (int r = 0; r < data.length; r++) {
+            for (int k = 0; k < data[r].length; k++) {
+                max = data[r][k] > max ? data[r][k] : max;
+            }
         }
-        System.out.println("Sum is: " + sum);
-    }
 
-    static void meanInts(int[] intNums) {
-
-        // The argument will actually an array
-        System.out.println("Argument array size is: "+intNums.length);
-
-        int sum = 0;
-        for (int i : intNums) {
-            sum += i;
-        }
-        System.out.println("Mean is: " + sum/intNums.length);
+        System.out.println("Max is: " + max);
     }
 
     public static void main(String[] args) {
 
-        // An array size in Java cannot be changed after creation, so we'll not be able
-        // to add new elements to the array
-        int[] array1 = {1, 2, 3};
-        int[] array2 = new int[]{4, 5, 6};
+        // An irregular 2D array
+        int[][] data = {
+                {1, 2, 3},
+                {8, 9},
+                {5, 8, 9, 6, 3}
+        };
 
-        int[] arrayA = new int[2];
-        arrayA[0] = 4;
-        arrayA[1] = 5;
-        //arrayA[2] = 6; // RUNTIME ERROR!!! // ArrayIndexOutOfBoundException
-
-        int[] array3 = new int[]{}; //we can create a zero lenght array
-
-        //passing an array to a method
-        meanInts(array1);
-
-
-
+        array2Dmax(data);
     }
 
 }
