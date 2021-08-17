@@ -1,12 +1,18 @@
 /*
- * Implicit casting also takes places with methods return type. If it can be done without data lose Java will do it
- * without complain. If it can't, it will complain.
+ * A method can call another method and so on. Method calls can be nested almost "indefinitely". Recursion is the nothing
+ * more than nested method calls, using always with the same method.
  *
+ * When using a method recursively, it always must have an exit condition or base case, which is a condition that
+ * returns a value or exits, instead of calling itself again. Otherwise the recursion will run indefinitely. A recursive
+ * algorithm must converge to its base case.
+ *
+ * Recursion, as a computational algorithm, is equivalent to iteration. Any recursive algorithm can be written using
+ * iterations and vice versa. The recursive approach is usually chosen when it is more natural for the problem in hand,
+ * though it can be computationally more expensive due to the new memory allocation and handling, needed in each method
+ * call.
  *
  * */
 
-
-import java.util.Arrays;
 
 class Myint {
 
@@ -30,23 +36,22 @@ class Myint {
 
 public class Main {
 
-    public static double returnDouble() {
-        int x = 4;
-        return x;
+    public static long factorial(final long n) {
+        // This function doesn't check for positive input, neither for too large values,
+        // eg. 20! is too large and cannot be stored in a long variable
+        if (n == 1)
+            return 1;
+        else
+            return n*factorial(n-1);
     }
 
-    public static int returnInt() {
-        double y = 4.7;
-        //return y;      //this will not be allowed cuz there is no implicit conversion (without data lose)
-                        // from double to int
-        return (int)y;  //explicit casting
-    }
 
 
     public static void main(String[] args) {
 
-        System.out.println("cast to double from int: " + returnDouble());
-        System.out.println("explcit cast to int from double (data lose): " + returnInt());
+        long n=4;
+        System.out.printf("Factorial of %d is %d: ",n, factorial(n));
+
     }
 
 }
