@@ -1,22 +1,10 @@
-<doc>  <!-- root element or node -->
-    <people id="1"> <!-- children node. 'id' is an attribute -->
-        <person id ="1">
-            <lastnane>Doe</lastnane>  <!-- children element. This is a text node -->
-            <firstname>John</firstname>
-        </person>
-        <person id ="2">
-            <lastnane>Smith</lastnane>
-            <firstname>Jim</firstname>
-        </person>
-    </people>
-    <people id="2">
-        <person id ="3">
-            <lastnane>Clinton</lastnane>
-            <firstname>Bill</firstname>
-        </person>
-        <person id ="4">
-            <lastnane>Bush</lastnane>
-            <firstname>George</firstname>
-        </person>
-    </people>
-</doc>
+<people> <!-- root node or element. -->
+    <person id ="1"> <!--an element node. id is an attribute-->
+        <lastnane>Doe</lastnane>  <!-- children element. This is a text node -->
+        <firstname>John</firstname>
+    </person>
+    <person id ="2">
+        <lastnane>Smith</lastnane>
+        <firstname>Jim</firstname>
+    </person>
+</people>
