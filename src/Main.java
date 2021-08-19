@@ -1,24 +1,20 @@
 /*
-* Functions, procedures, subroutines, methods : different names in different languages
 *
-* Classes and their members (methods and fields) can have different modifiers.
-* Access modifiers for methods: public, protected, private
-* Other modifiers for methods: abstract, static, final, synchronized, native, strictfp.
-* public: method callable from any class
-* private: only from inside same class
-* protected: from same package or subclasses in other packages
-* default (when nothing is specified) from same package
-*
-*  For abstract, static or final we just decide whether or not to use them, thus imposing some additional
-*  characteristics of the method. For example, a static vs a non-static method.
-*
-* - Void is not a type, so we cannot make cast to void.
-* - Method names have the same restrictions as for variables and class names
-* - 'parameters' is for methods definitions 'arguments' is for methods calls
-* - variables in method parameters are local to the method.
-* - a method parameter can be 'final' , which means it cannot be reassigned again in the method body
+* Members of JAVA	    Private	 Default	 Protected	Public
+*           Class	    No	     Yes         No	        Yes
+*           Variable	Yes	     Yes	     Yes    	Yes
+*           Method  	Yes  	 Yes	     Yes	    Yes
+*           Constructor	Yes	     Yes	     Yes    	Yes
+*           interface	No	     Yes         No     	Yes
 *
 *
+*  Allowed access modifiers for different Java things are shown above.
+*  As can be seen, classes and interfaces (things that can be used to reference objects) can't be neither Private
+*  nor Protected !
+*
+*  Nested classes can be provate or protected though, but I haven't seen any example on it.
+*
+*  See https://www.mygreatlearning.com/blog/the-access-modifiers-in-java/
 * */
 
 
