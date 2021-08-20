@@ -1,5 +1,7 @@
 *.iml
 *.iws
 *.ipr
+*.class
+*.jar
 .idea/
 out/
