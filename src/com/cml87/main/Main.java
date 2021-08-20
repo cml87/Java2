@@ -1,39 +1,36 @@
 package com.cml87.main;
 
+import com.cml87.utils.Myutils;
+
 /*
- * See Java Tools Tutorials - Herong's Tutorial Examples
- * See jar --help
+ * We create a jar file for a multi-package java application with option -C
  *
- * JAR - Java Archive File Format
- * Java applications can be stored in jar files (Java archive). It can bundle many .class files, images, sounds.
+ * $ jar --create --verbose --file main.jar -C /home/camilo/my_java_projects/Java2/out/production/Java2/ ./com
+ * $ jar cvf main.jar -C /home/camilo/my_java_projects/Java2/out/production/Java2/ ./com
+ * where
  *
- * It is a ZIP file.
+ * /home/camilo/my_java_projects/Java2/out/production/Java2/ -> tells jar to change the working dir to here
+ * ./com  -> archive the entire subdirectory tree of ./com, which is the base package of our application. In this tree
+ * we should have the compiled .class files of or application, inside the corresponding package directories.
  *
- * Can have attributes stored in the manifest file .../META-INF/MANIFEST.INF.
+ * The manifest file will be created automatically. Its content can be seen with
  *
- * A jar file can be used in classpath for javac and java commands, if we can to include its classes.
+ * $ jar tvf main.jar // --list --verbose --file
  *
- * It can be executable if 'Main-Class' is provided in its manifest.
+ *  The generated jar file will be saved in the current dir. Extracting the jar file with
  *
- *  It can be a module JAR, if module-info.class is provided in its root directory (?)
+ * $ jar xvf main.jar // --extract --verbose --file
  *
- *  We can pass options to the jar command through a file using '@' eg:
- *  jar --create --file my.jar @classes.list
+ * We can go and examine the META-INF/MANIFEST.MF and see that it doesn't contain a Main-Class entry. Therefore, to
+ * run this jar as an application (run its main() method) we need to tell jar which class contains the main() method.
+ * We use option cp:
  *
- *  We can compile the class and add it to a jar with. The manifest file (META-INF/MANIFEST.MF) will be added
- *  automatically.
- *  $ javac Main.java  // creates a .class in the current dir
- *  $ jar --create --verbose --file main.jar Main.class  // creates the jar with our class
+ * $  java -cp main.jar com.cml87.main.Main
  *
- *  In short format the above jar command can be written as
- *  $ jar cvf main.jar Main.class
- *  $ jar -c -v -f main.jar Main.class
- *  $ jar -cvf main.jar Main.class
+ * Next we'll see how to specify custom entries to the manifest file, or how to pass a complete manifest file to the jar
+ *  command.
  *
- *  We can list a jar content with:
- *  $jar --list -v -f main.jar // or tvf
  *
- *  To extract the files in a jar: jar --extract --verbose --file <jar_file>  // or xvf
  * */
 
 
@@ -41,7 +38,8 @@ public class Main {
 
     public static void main(String[] args) {
 
-        System.out.println("Hello jar !");
+        System.out.println("Hello jar jar!");
+        Myutils.print();
 
     }
 
