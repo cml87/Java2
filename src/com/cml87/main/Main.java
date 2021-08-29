@@ -3,21 +3,34 @@ package com.cml87.main;
 import com.cml87.utils.Myutils;
 
 /*
- * Other thoughts about jas:
- * 1. jar files can be specified in Java class path as to the compiler 'javac' and the launcher 'java'
- *    See Herong, Using JAR files in Java Class Paths
- * 2. .class files inside a jar can be updated or replaced with option --update.
- *    See Herong, Updating Class Files in JAR.
- * 3. We could simulate an executable jat file by making and executable bash script that receive some argumants and
- *    pass them to a jar file it calls inside with java -jar.
- *    See 'How to convert “jar” to Linux executable file?' Stackoverflow
- * 4. We can create a jar to store all class files of a Java module.
- *    See Herong, 'Creating Module JAR File'
+ * Method overloading is defining two methods with the same name a given class, but with different signatures.
+ *
+ * In Java a method signature is the combination of the method name, its number of parameters, the type of parameters
+ * and order of parameters. Java cannot distinguish between two methods with the same signature. Therefore, method
+ * overloading is only allowed for methods that differ in their signature somehow.
+ *
+ * The return type, method modifiers, and thrown exceptions do not form part of the method signature.
+ *
+ * Method overloading is used to define methods that have very similar logic but differ in some details. Sometimes
+ * 'generics' can be used instead of method overloading, avoid to define several methods with the same name.
+ *
+ * Method overloading is commonly used with class constructors.
+ *
+ * Method overloading is one of the three types of polymorphisms that exist in Java: static polymorphism.
+ * It's is static because at compile time the compiler will know which method version to use, performing an 'early
+ * binding' between the caller code and the method.
+ *
+ * The other two types of polymorphism are 'subtype polymorphism' (OOP and inheritance) and 'parametric polymorphism'
+ * (generics)
  *
  * */
 
 
 public class Main {
+
+    // Two methods with the same signature
+    // public void foo( double d){}
+    // public int foo(double d){}
 
     public static void main(String[] args) {
 
