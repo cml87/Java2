@@ -1,42 +1,69 @@
 /*
- * The main() method is the entry point of a Java program.
- * The name of a Java program is the name of the class  containing the main() method. The main() method is called
- * automatically by the JVM when the program is run with the java runner command "java".
  *
- * In Java the main() method must always returns 'void'. In other programming languages, such as C and C#, it may return
- * (to the execution environment) an int, eg. 0 to indicate success, or something distinct than 0 (usually 1 or -1) to
- * indicate failure.
+ * The following program attempts to store an unsigned integer number gotten from the command line, in a byte, ie. in
+ * only 8 bits. For this, the number must be in the range [0, 255].
  *
- * To communicate success or failure to the execution environment, Java uses 'status code' using the static method
- * exit() of class java,lang.System, module java.base.
+ * In Java there is no unsigned byte. A byte is a signed type in Java ranged [-128, 127]. However we can write code to
+ * parse it as an unsigned number ranged [0, 255]. See – https://mkyong.com/java/java-convert-bytes-to-unsigned-bytes/.
  *
+ * This program returns to the caller environment two different exit codes (two numbers) that can be interpreted by the
+ * former. We return these numbers using method System.exit(). The caller will be the following script run from bash.
+ *
+ *
+ * #!/bin/bash
+ *
+ * ERROR(){
+ * 	eccho ERROR - Value of out range of a byte [0 to 255]
+ * }
+ *
+ * OK(){
+ * 	echo OK - Conversion allowed
+ * }
+ *
+ * END(){
+ * 	echo TERMINATION CODE [$1]
+ * }
+ *
+ * java -cp /home/camilo/my_java_projects/Java2/out/production/Java2 Main  ##call the Java program 'Main'
+ *
+ * ## internal variable. Catches the termination code of the last executed program.
+ * ## bash interprets termination codes only between 0 and 255. Above will be module 256 reduced.
+ * EC=$?
+ *
+ * if [ $EC -eq 0 ]; then OK; fi
+ * if [ $EC -eq 119 ]; then ERROR; fi
+ * END $EC
 
- * Command-line supplied arguments will be passes to the main() method through its String[] argument, usually called
- * 'args'. The name of the unique parameter in the main() method can be anything, but its type must be String[].
- *
- * Here we have a simple program that just prints the command line arguments passed. The program will be just
- * one .class file (Main.class), obtained after compiling the main class of the program. The main class of the program
- * is the one containing the main() method. We called this class 'Main' here, but it can have any name of course.
- * We can run this program with:
- *
- * $java Main one two three
- *
- *  This invokes the main() method in class Main and pass it the arguments [0]: 'one', [1]: 'two', [2]: 'three'
- *
- * Note than in Java, different to C/C++ the firs argument passed to the main() method is not program name, but the
- * first argument passed in the command line.
- *
  *
  * */
+
+import java.util.Scanner;
+
+class OverflowException extends ArithmeticException{}
 
 public class Main {
 
     public static void main(String[] args) {
 
-        System.out.println("The command line arguments are: ");
-        for (int i=0; i < args.length; i++ ){
-            System.out.println(args[i]);
+        final int ERROR_SUCCESS = 0x0;
+        final int ERROR_ARITHMETIC_OVERFLOW=0x77;  //119
+
+        int nr;
+
+        System.out.println("Enter a positive number that can be stored in a byte [0, 255]: ");
+        try {
+            nr = new Scanner(System.in).nextInt();
+            if (nr<0 || nr>255)
+                throw new OverflowException();
+
+            //TODO some useful stuffs
+
+        } catch (OverflowException oe){
+            System.exit(ERROR_ARITHMETIC_OVERFLOW);
         }
+
+        System.exit(ERROR_SUCCESS);
+
 
     }
 
