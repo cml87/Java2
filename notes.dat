@@ -1,0 +1,41 @@
+Classes encapsulate properties and operations in one entity. Classes have members: member variables (or fields) and
+member methods.
+ *
+In OOP dynamic behaviour (methods) is subordinated to structure (classes).
+ *
+The body of a class may have the fallowing members:
+- member variables and constants
+- member methods
+- nested classes
+- interfaces
+- constructors
+- instance initializers
+- static initializer
+
+Only if we don't supply a constructor explicitly, the compiler will create a default constructor which has no
+arguments and just allocates memory for the object. Every constructor that doesn't call another constructor in the
+same class has a call to its parent constructor whether it was written explicitly or inserted by the compiler
+through super().
+
+Instance and class variables don't require us to initialize them. As soon as we declare these variables,
+they are given a default value as follows:
+boolean: false
+byte, short, int, long: 0
+float, double: 0.0
+char: '\u0000'
+reference type: null
+
+Local variables (variables defined inside a method) must be initialized before use, otherwise the compiler will not let
+us use them.
+Constants in Java are defined by means of the 'final' keyword. This keyword makes the variable's value unmodified after
+it was first set. Member variables with the 'final' modifier must be initialized either when declared or in the class
+constructor(s). Eg:
+
+private static final int YEAR = 2000;
+
+In Java, an initializer is a block of code that has no associated name or data type and is placed outside of any
+method, constructor, or another block of code. There are two types of initializers: instance initializers and
+static initializer.
+
+Instance initializers initializes instance variables. A static initializer initializes static fields.
+
