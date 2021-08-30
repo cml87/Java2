@@ -1,8 +1,8 @@
 Classes encapsulate properties and operations in one entity. Classes have members: member variables (or fields) and
 member methods.
- *
+
 In OOP dynamic behaviour (methods) is subordinated to structure (classes).
- *
+
 The body of a class may have the fallowing members:
 - member variables and constants
 - member methods
@@ -17,6 +17,12 @@ arguments and just allocates memory for the object. It's called the default cons
 Every constructor that doesn't call another constructor in the same class has a call to its parent constructor,
 whether it was written explicitly or inserted by the compiler through super(). Similarly, if a class does not
 explicitly extends another class, the compiler makes it extend class "Object".
+
+Constructors in a class need to have the appropriate access modifiers (as for member methods) if we want to instantiate
+object of this class with 'new'. For example, if a constructor has no explicit access modifier, it will have 'default'
+by omission. This means that such constructor will only be visible inside the same package as where the class is defined.
+Therefore, even if the class is public, outside this package we'll not be able to instantiate this class, although we'll
+be able to use its type as a reference, cuz it's a public class.
 
 Instance and class variables don't require us to initialize them. As soon as we declare these variables,
 they are given a default value as follows:
@@ -67,4 +73,5 @@ A .java file can at most contain one public class, and it must have the same nam
 
 A class toString() method will always overwrite such method from its superclass (which will be Object if nothing is
 specified). This method must return a String, and will always be invoked whenever an identifier of an instance of the
-class is used alone (without following with the . operator).
+class is used alone (without following with the . operator). If we do not overwrite the toString() method, its
+definition from the Object class will be used, which will print in the format package_name.type_name@hex_hash_code

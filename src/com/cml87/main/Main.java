@@ -35,12 +35,12 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Classb classb = new Classb();
+        Myutils myutils0;
 
-        //method to String is called automatically whenever a a reference type is used alone
-        String str = classb + " hello";
-        System.out.println(classb);
-        System.out.println(str);
+        // We cannot instantiate an object of class Myutils cuz the constructor we are calling with new
+        // has 'default' visibility (ie. only in package). There it's not visible here, we're in another package.
+        //Myutils myutils = new Myutils(4);
+
 
     }
 
