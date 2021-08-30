@@ -12,6 +12,8 @@ The body of a class may have the fallowing members:
 - instance initializers
 - static initializer
 
+Constructors return nothing.
+
 Only if we don't supply some constructor explicitly, the compiler will create a default constructor which has no
 arguments and just allocates memory for the object. It's called the default constructor.
 Every constructor that doesn't call another constructor in the same class has a call to its parent constructor,
@@ -23,6 +25,8 @@ object of this class with 'new'. For example, if a constructor has no explicit a
 by omission. This means that such constructor will only be visible inside the same package as where the class is defined.
 Therefore, even if the class is public, outside this package we'll not be able to instantiate this class, although we'll
 be able to use its type as a reference, cuz it's a public class.
+
+We might define a member method with the same name as the class, as constructor do, though this would create confusion.
 
 Instance and class variables don't require us to initialize them. As soon as we declare these variables,
 they are given a default value as follows:
