@@ -12,10 +12,11 @@ The body of a class may have the fallowing members:
 - instance initializers
 - static initializer
 
-Only if we don't supply a constructor explicitly, the compiler will create a default constructor which has no
-arguments and just allocates memory for the object. Every constructor that doesn't call another constructor in the
-same class has a call to its parent constructor whether it was written explicitly or inserted by the compiler
-through super().
+Only if we don't supply some constructor explicitly, the compiler will create a default constructor which has no
+arguments and just allocates memory for the object. It's called the default constructor.
+Every constructor that doesn't call another constructor in the same class has a call to its parent constructor,
+whether it was written explicitly or inserted by the compiler through super(). Similarly, if a class does not
+explicitly extends another class, the compiler makes it extend class "Object".
 
 Instance and class variables don't require us to initialize them. As soon as we declare these variables,
 they are given a default value as follows:
@@ -39,3 +40,31 @@ static initializer.
 
 Instance initializers initializes instance variables. A static initializer initializes static fields.
 
+<<Class>>
+
+See https://www.baeldung.com/java-initialization for an explanation of the fundamental difference between primitive types
+and reference types in Java:
+"Unlike primitive types that hold their values in the memory where the variable is allocated, references don't hold the
+value of the object they refer to. Instead, a reference points to an object by storing the memory address where the
+object is located."
+
+Class modifiers can be:
+- access modifiers:
+    - public: in/out package visibility
+    - protected: in package visibility plus out package only for subclasses
+    - default: in package visibility only (but we don't write down 'default' in our code, it's meant by omission)
+    - private (only of inner or nested classes)
+- abstract
+- static (only for static-nested classes). See https://www.baeldung.com/java-static
+- final: makes the class non extendable
+- strictfp
+
+Class members (fields and methods) have the same access modifiers as written above, with the same meanings. Class members
+are always accessible from the body of the same class without qualification. The only exception is static methods, which
+can only access other static members (fields and methods).
+
+A .java file can at most contain one public class, and it must have the same name as the file.
+
+A class toString() method will always overwrite such method from its superclass (which will be Object if nothing is
+specified). This method must return a String, and will always be invoked whenever an identifier of an instance of the
+class is used alone (without following with the . operator).

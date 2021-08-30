@@ -2,6 +2,18 @@ package com.cml87.main;
 
 import com.cml87.utils.Myutils;
 
+class Classb{
+     int x =4;
+
+     // toString() method overwriting superclass Object.toString() method
+     public String toString(){
+         return String.valueOf(x);
+     }
+
+}
+
+
+
 public class Main {
 
     private int x;
@@ -23,8 +35,12 @@ public class Main {
 
     public static void main(String[] args) {
 
-        System.out.println("Hello jar jar!");
-        Myutils.print();
+        Classb classb = new Classb();
+
+        //method to String is called automatically whenever a a reference type is used alone
+        String str = classb + " hello";
+        System.out.println(classb);
+        System.out.println(str);
 
     }
 
