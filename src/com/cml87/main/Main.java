@@ -3,7 +3,7 @@ package com.cml87.main;
 import com.cml87.utils.Myutils;
 
 class Classb{
-     int x =4;
+     private int x =4;
 
      // toString() method overwriting superclass Object.toString() method
      public String toString(){
@@ -12,6 +12,16 @@ class Classb{
 
      public Classb (int x){
          this.x = x;
+     }
+
+    // See how the private field of type Classb can be accessed directly in this constructor
+    // and the method below. It's because this constructor and this method belong to the same class
+    // type
+     public Classb (Classb cb) {
+         this.x = cb.x;
+     }
+     public void methodA(Classb cb){
+         int y = cb.x;
      }
 }
 

@@ -12,13 +12,15 @@ The body of a class may have the fallowing members:
 - instance initializers
 - static initializer
 
-Constructors return nothing. Constructors may throw exceptions.
+Constructors return nothing. Constructors may throw exceptions. Constructors may be overloaded as normal methods do.
 
 Only if we don't supply some constructor explicitly, the compiler will create a default constructor which has no
 arguments (parameterless constructor) and just allocates memory for the object. It's called the default constructor.
 This default constructor will implicitly call the parameterless constructor of the superclass. Therefore if, for example,
 ClassB extends ClassA, and ClassA has not a parameterless constructor, Classb will not be allowed to have a parameterless
 constructor either, not even that inserted by the compiler by default.
+
+The default (parameterless) constructor inserted by the compiler will have the same access modifier as its class.
 
 Every constructor that doesn't call another constructor in the same class (using this(...) ) has a call to its parent
 constructor, whether it was written explicitly or inserted by the compiler through super(). Similarly, if a class does not
@@ -84,3 +86,7 @@ A class toString() method will always overwrite such method from its superclass 
 specified). This method must return a String, and will always be invoked whenever an identifier of an instance of the
 class is used alone (without following with the . operator). If we do not overwrite the toString() method, its
 definition from the Object class will be used, which will print in the format package_name.type_name@hex_hash_code
+
+In the body of constructors or methods of a class, private fields of an instance of the same class type received as
+argument can be accessed directly. In other words, private members (not only fields) are private to the type, not to
+an instance of that type.
