@@ -10,8 +10,15 @@ class Classb{
          return String.valueOf(x);
      }
 
+     public Classb (int x){
+         this.x = x;
+     }
 }
 
+// This class with the default parameterless constructor will not be allowed
+// cuz it would call the parameterless constructor of its superclass which
+// doesn't exist
+// class Classc extends Classb {}
 
 
 public class Main {
