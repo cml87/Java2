@@ -90,3 +90,27 @@ definition from the Object class will be used, which will print in the format pa
 In the body of constructors or methods of a class, private fields of an instance of the same class type received as
 argument can be accessed directly. In other words, private members (not only fields) are private to the type, not to
 an instance of that type.
+
+<<Class finalizer>>
+
+Besides class constructors, in Java we have class finalizers. A class finalizer defines a set of actions to be taken
+before an instance of a class is deleted by the Java garbage collector. A typical example is to close a file stream
+previously opened when the instance was created (free resources).
+
+The garbage collector is invoked to free the memory occupied by a class instance, when we cannot longer refer to it.
+We cannot call the Java garbage collector explicitly.
+
+We can call a class's finalizer explicitly (provided its access modifiers allow so), but it will be called by the
+garbage collector as well, just that we cannot know when. The finalizer always overwrite that of the class's superclass.
+
+The syntax of a finalizer is equal to that of any normal method, but it must be called "finalize" eg.:
+@Override
+public void finalize() { ... }
+
+We should NEVER use finalizers though. There are several drawbacks to finalizers. A preferred alternative is to make
+our class implement the AutoCloseable interface and overwrite the close() method.
+See https://www.baeldung.com/java-finalize for a though and clear explanation of finalizers.
+
+In fact, finalize() method has been deprecated starting with Java 9 – and will eventually be removed.
+
+
