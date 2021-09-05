@@ -58,9 +58,21 @@ static initializer.
 Instance initializers initializes instance variables. It may contain expressions as well.
 A static initializer initializes static fields.
 
-An instance initializer block is executed only once, when an instance is created. It is automatically executed at the
-very beginning of any constructor body. Therefore, in the constructor we can actually use variables initialized in the
-instance initializer:
+When an instance is initialized, at the very beginning of any constructor body the following steps are executed only
+once:
+1. the JVM initializes the fields with default values (eg, 0 for integer primitives)
+2. instance variable initializers are executed
+3. instance initializer block is executed
+
+These steps are preceded only by the invocation to another constructor of the class, using keyword 'this', if such
+instruction exists in the constructor body. If the new constructor we landed doesn't contain any this() call to another
+constructor, the mentioned steps will be executed in that order.
+
+(See Pellegrino Principe "Flusso elaborativo di creazione di un'instanza p. 262").
+
+WE CAN COMPILE A CLASS AND THEN DECOMPILE ITS .CLASS TO SEE WHAT THE COMPILER WILL ACTUALLY UNDERSTAND FROM WHAT WE CODED !!!
+
+Therefore, in the constructor we can actually use variables initialized in the instance initializer:
 
 class ClassA{
     private int x = 33;  // the expression 33 is an instance variable initializer
@@ -192,7 +204,8 @@ System.out.println(ca.setX(3).setY(y));
 
 When we use 'this' inside a constructor to call another constructor of the class, such instruction must be the first
 in the constructor body. The following is a very common example, where we make converge the overloaded constructors of
-a class into a single one containing the important logic:
+a class into a single one that concentrates the logic. This also helps avoiding code duplication in the overloaded
+constructors:
 
 class MyTime{
     int h; int m; int s;
