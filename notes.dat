@@ -190,9 +190,9 @@ class ClassA {
 ClassA ca = new ClassA()
 System.out.println(ca.setX(3).setY(y));
 
-When we use 'this' inside a constructor to call another constructor of the class, such instructions must be the first
+When we use 'this' inside a constructor to call another constructor of the class, such instruction must be the first
 in the constructor body. The following is a very common example, where we make converge the overloaded constructors of
-a class into a single one containing the imprtant logic:
+a class into a single one containing the important logic:
 
 class MyTime{
     int h; int m; int s;
@@ -212,7 +212,5 @@ class MyTime{
         this.m = m;
         this.s = s;
     }
-
-
 }
 

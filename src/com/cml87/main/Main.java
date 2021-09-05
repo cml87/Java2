@@ -27,12 +27,47 @@ class ClassA{
     }
 }
 
+class MyTime{
+    int h; int m; int s;
+
+    public MyTime() {
+        this (0, 0, 0);
+    }
+    public MyTime(int h) {
+        // System.out.println("sss"); not allowed cuz a call to another constructor through this() must be the first
+        // instruction
+        this (h,0,0);
+    }
+    public MyTime(int h, int m) {
+        this (h,m,0);
+    }
+
+    public MyTime(int h, int m, int s) {
+        this.h = h;
+        this.m = m;
+        this.s = s;
+    }
+
+    @Override
+    public String toString() {
+        return "MyTime{" +
+                "h=" + h +
+                ", m=" + m +
+                ", s=" + s +
+                '}';
+    }
+}
+
+
 public class Main {
 
     public static void main(String[] args) {
 
         ClassA ca = new ClassA(5);
 
+        MyTime myTime = new MyTime(4);
+
+        System.out.println(myTime);
     }
 
 }
