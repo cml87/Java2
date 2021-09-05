@@ -55,7 +55,39 @@ In Java, an initializer is a block of code that has no associated name or data t
 method, constructor, or another block of code. There are two types of initializers: instance initializers and
 static initializer.
 
-Instance initializers initializes instance variables. A static initializer initializes static fields.
+Instance initializers initializes instance variables. It may contain expressions as well.
+A static initializer initializes static fields.
+
+An instance initializer block is executed only once, when an instance is created. It is automatically executed at the
+very beginning of any constructor body. Therefore, in the constructor we can actually use variables initialized in the
+instance initializer:
+
+class ClassA{
+    private int x = 33;  // the expression 33 is an instance variable initializer
+    private int y;
+    private int z;
+
+    // this is an instance initializer block. It is executed only once, when and instance is created. It may contain
+    // expression as well
+    {
+        x = 55;
+        y = 88;
+        z = x + y + foo();
+    }
+
+    ClassA(int x) {
+        // variable z was set in the instance initializer
+        this.x = x + z;
+    }
+
+    private int foo(){
+        return 100;
+    }
+}
+
+Instance initializer blocks are very useful to isolate, and write only once, the initializations of some class fields,
+which all constructors in the class need to initialize. Without such possibility, we would need to initialize these
+field in all the constructors, thus duplicating code.
 
 <<Class>>
 
@@ -64,6 +96,9 @@ and reference types in Java:
 "Unlike primitive types that hold their values in the memory where the variable is allocated, references don't hold the
 value of the object they refer to. Instead, a reference points to an object by storing the memory address where the
 object is located."
+
+The reference will be stored in an area of memory called the "stack", whereas the object it points to will be stored in
+another area of memory called the "heap" (or managed heap). Primitive types will be stored in the stack directly.
 
 Class modifiers can be:
 - access modifiers:
@@ -113,4 +148,71 @@ See https://www.baeldung.com/java-finalize for a though and clear explanation of
 
 In fact, finalize() method has been deprecated starting with Java 9 – and will eventually be removed.
 
+<<this>>
+
+Whenever an object is instantiated, a special pointer to it is created. This pointer will be called "this" and can only
+be used in the body of constructors, instance methods, default methods, instance initializers and instance variables
+initializers, always of the class type of the object. It can't be used in static methods or static initializers,
+because these exist only at class level.
+
+When we directly access members of a class from the body of its constructors or methods, the compiler actually prepends
+"this." to our call. We can do it explicitly as well, as when we pass to a constructor arguments named after some
+fields of the class. Eg:
+
+class ClassA{
+    private int x;
+
+    ClassA(int x) {this.x = x;}
+}
+
+This is an example of "hiding through nesting" or shadowing: the identifiers 'x' inside the constructor will be in an
+"inner scope" and will "shadow" the identifier x in the class fields, which will be in an "outer scope". It may happen
+between the body class and any of its methods body (a constructs is just a special method). In this case, access to
+the identifier of the outer scope will be possible only using the keyword 'this'.
+
+The keyword 'this' allows for a very common pattern where we call different methods or constructors of a class in
+cascade, to separately set some of its fields eg:
+class ClassA {
+    private int x;
+    private int y;
+
+    public ClassA setX(int x){
+        this.x = x;
+        return this;
+    }
+    public ClassB setY(int y){
+        this.y = y;
+        return this;
+    }
+}
+
+//in the main()
+ClassA ca = new ClassA()
+System.out.println(ca.setX(3).setY(y));
+
+When we use 'this' inside a constructor to call another constructor of the class, such instructions must be the first
+in the constructor body. The following is a very common example, where we make converge the overloaded constructors of
+a class into a single one containing the imprtant logic:
+
+class MyTime{
+    int h; int m; int s;
+
+    public MyTime() {
+        this (0, 0, 0);
+    }
+    public MyTime(int h) {
+        this (h,0,0);
+    }
+    public MyTime(int h, int m) {
+        this (h,m,0);
+    }
+
+    public MyTime(int h, int m, int s) {
+        this.h = h;
+        this.m = m;
+        this.s = s;
+    }
+
+
+}
 

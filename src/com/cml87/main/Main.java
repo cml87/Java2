@@ -2,49 +2,36 @@ package com.cml87.main;
 
 import com.cml87.utils.Myutils;
 
-class FileManager {
+class ClassA{
+    private int x = 33;  // the expression 33 is an instance variable initializer
+    private int y;
+    private int z;
 
-    public FileManager(){
-        System.out.println("FileManager constructor invoked ...");
+    // this is an instance initializer block. It is executed only once, when and instance is created. It may contain
+    // expression as well
+    {
+        x = 55;
+        y = 88;
+        z = x + y + foo();
+        System.out.println("inside instance initialization block");
     }
 
-    protected void finalize() {
-        System.out.println("FileManager finalizer invoked ...");
+    ClassA(int x) {
+        System.out.println("inside constructor");
+        this.x = x;
+        System.out.println(y);
     }
 
+    private int foo(){
+        return 100;
+    }
 }
-
-
 
 public class Main {
 
     public static void main(String[] args) {
 
-        FileManager fm = new FileManager();
-
-        fm = null; // now the memory previously allocated with new will be eligible for garbage-collection
-
-        // totalMemory(): returns the amount of memory currently allocated, plus the available memory to allocate more
-        // objects in the future, always in bytes
-        // freeMemory(): returns only the memory available, to be allocated for new objects in the future, in bytes.
-        System.out.printf("Memory occupied in the heap, in bytes: %d%n",
-                Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory());
-
-        // kindly ask the JVM  to start-up garbage collector operations ??
-        // kindly ask because we cannot explicitly call the garbage collector actually. It seems we can only hint the
-        // JVM to do it
-        Runtime.getRuntime().gc();
-
-        System.out.println("- a -");
-
-        // kindly ask the JVM to call the finalizers of the objects eligible for garbage-collection ??
-        Runtime.getRuntime().runFinalization();
-
-        System.out.println("- b -");
-
-        System.out.printf("Memory occupied in the heap, in bytes: %d%n",
-                Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory());
-
+        ClassA ca = new ClassA(5);
 
     }
 
