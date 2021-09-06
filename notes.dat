@@ -127,6 +127,21 @@ Class members (fields and methods) have the same access modifiers as written abo
 are always accessible from the body of the same class without qualification. The only exception is static methods, which
 can only access other static members (fields and methods).
 
+Inside a class, all its members have class-body visibility, they can be accessed directly in that scope. Variables inside
+a method or a black {} have, instead, method or block visibility only. If with the same name, the latter can shadow
+class instance variables, making us need the keyword 'this' to be able to refer to the shadowed variables.
+
+Getters and Setters if private fields allow for further checks when a private field wants to be set or read from a
+client code. For example, a setter might check for the validity of the value we want to set, whereas a getter might check
+for read access permissions.
+
+Static members, p. 268
+Static members can be either variables or methods. They are called "class variables" and "class methods".
+
+Static methods of a class cannot access non-static members of the class (fields and methods), because from a class body
+class members are actually invoked by the compiler prepending "this." to the call, as we know, in this case there is
+no object 'this' can refer to. For this reason we cannot use either 'this' or 'super', in a static method.
+
 A .java file can at most contain one public class, and it must have the same name as the file.
 
 A class toString() method will always overwrite such method from its superclass (which will be Object if nothing is
