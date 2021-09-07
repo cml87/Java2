@@ -58,6 +58,9 @@ static initializer.
 Instance initializers initializes instance variables. It may contain expressions as well.
 A static initializer initializes static fields.
 
+A static field is a pointer to a common memory location that all instance of that class will have. Static fields are
+also initialize with default values by the compiler, as normal class fields are.
+
 When an instance is initialized, at the very beginning of any constructor body the following steps are executed only
 once:
 1. the JVM initializes the fields with default values (eg, 0 for integer primitives)
@@ -68,9 +71,16 @@ These steps are preceded only by the invocation to another constructor of the cl
 instruction exists in the constructor body. If the new constructor we landed doesn't contain any this() call to another
 constructor, the mentioned steps will be executed in that order.
 
-(See Pellegrino Principe "Flusso elaborativo di creazione di un'instanza p. 262").
+(See Pellegrino Principe "Flusso elaborativo di creazione di un'instanza p. 262, p. 274").
 
 WE CAN COMPILE A CLASS AND THEN DECOMPILE ITS .CLASS TO SEE WHAT THE COMPILER WILL ACTUALLY UNDERSTAND FROM WHAT WE CODED !!!
+
+The first time (only the first time) we call a constructor or a static method of a class having a static initializer
+block, the call will trigger the execution of this block first; then the body of the constructor or the static method
+will be executed. The same is true for an assignment to a static field, it will trigger the static initializer block.
+
+It seems this block is also executed when we assign a value to a static member...
+
 
 Therefore, in the constructor we can actually use variables initialized in the instance initializer:
 
@@ -123,12 +133,42 @@ Class modifiers can be:
 - final: makes the class non extendable
 - strictfp
 
+Class fields modifiers can be (p. 270):
+- access modifiers:
+    - public
+    - protected
+    - private
+    - default
+- final
+- static
+- transient
+- volatile
+
+Class methods can have the modifiers (p. 271):
+- access modifiers
+    - public
+    - protected
+    - private
+- final
+- static
+- abstract
+- synchronized
+- native
+- strictfp
+
+     	         private  default	protected	public
+Class	         No	      Yes	    No      	Yes
+Nested Class	 Yes	  Yes   	Yes     	Yes
+Constructor	     Yes      Yes   	Yes     	Yes
+Method	         Yes	  Yes	    Yes     	Yes
+Field        	 Yes	  Yes	    Yes      	Yes
+
 Class members (fields and methods) have the same access modifiers as written above, with the same meanings. Class members
 are always accessible from the body of the same class without qualification. The only exception is static methods, which
 can only access other static members (fields and methods).
 
 Inside a class, all its members have class-body visibility, they can be accessed directly in that scope. Variables inside
-a method or a black {} have, instead, method or block visibility only. If with the same name, the latter can shadow
+a method or a block {} have, instead, method or block visibility only. If with the same name, the latter can shadow
 class instance variables, making us need the keyword 'this' to be able to refer to the shadowed variables.
 
 Getters and Setters if private fields allow for further checks when a private field wants to be set or read from a
@@ -141,6 +181,9 @@ Static members can be either variables or methods. They are called "class variab
 Static methods of a class cannot access non-static members of the class (fields and methods), because from a class body
 class members are actually invoked by the compiler prepending "this." to the call, as we know, in this case there is
 no object 'this' can refer to. For this reason we cannot use either 'this' or 'super', in a static method.
+However, constructors, which cannot be static, can access static members.
+
+Static fields can also be final.
 
 A .java file can at most contain one public class, and it must have the same name as the file.
 
@@ -196,6 +239,11 @@ This is an example of "hiding through nesting" or shadowing: the identifiers 'x'
 "inner scope" and will "shadow" the identifier x in the class fields, which will be in an "outer scope". It may happen
 between the body class and any of its methods body (a constructs is just a special method). In this case, access to
 the identifier of the outer scope will be possible only using the keyword 'this'.
+
+Constructors cannot be static. But constructors can access static members of a class and modify them if desired. A
+common pattern is to have a constructor that increments a static counter of the class, so each time a new instance of
+the class is created (new object) the counter is incremented, thus keeping track of the number of object of the class
+instantiated so far. We can avoid new instances modifying a static field by declaring the field also 'final'.
 
 The keyword 'this' allows for a very common pattern where we call different methods or constructors of a class in
 cascade, to separately set some of its fields eg:

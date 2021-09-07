@@ -3,71 +3,52 @@ package com.cml87.main;
 import com.cml87.utils.Myutils;
 
 class ClassA{
-    private int x = 33;  // the expression 33 is an instance variable initializer
-    private int y;
-    private int z;
+    static int c=-1;
+    static int x;
 
-    // this is an instance initializer block. It is executed only once, when and instance is created. It may contain
-    // expression as well
-    {
-        x = 55;
-        y = 88;
-        z = x + y + foo();
-        System.out.println("inside instance initialization block");
+    static {
+        c++;
+        System.out.println("static initializer block run");
     }
 
-    ClassA(int x) {
-        System.out.println("inside constructor");
-        this.x = x;
-        System.out.println(y);
+    ClassA(String sup){
+        // this constructor will do nothing. I just want to see if it triggers the static initializer block
     }
 
-    private int foo(){
-        return 100;
-    }
-}
-
-class MyTime{
-    int h; int m; int s;
-
-    public MyTime() {
-        this (0, 0, 0);
-    }
-    public MyTime(int h) {
-        // System.out.println("sss"); not allowed cuz a call to another constructor through this() must be the first
-        // instruction
-        this (h,0,0);
-    }
-    public MyTime(int h, int m) {
-        this (h,m,0);
+    ClassA() {
+        System.out.println("field c incremented inside constructor");
+        c++;
     }
 
-    public MyTime(int h, int m, int s) {
-        this.h = h;
-        this.m = m;
-        this.s = s;
+    public static void printC(){
+        System.out.println(c);
     }
 
-    @Override
-    public String toString() {
-        return "MyTime{" +
-                "h=" + h +
-                ", m=" + m +
-                ", s=" + s +
-                '}';
+    public void printHello(){
+        System.out.println("Hello");
     }
 }
-
 
 public class Main {
 
     public static void main(String[] args) {
 
-        ClassA ca = new ClassA(5);
+        //ClassA ca = new ClassA("sup");
 
-        MyTime myTime = new MyTime(4);
+        //ClassA ca1 = new ClassA("sup");
 
-        System.out.println(myTime);
+        //ClassA.printC(); // prints 0, cuz before the constructor body is run, the static initializer block is run
+
+        //ClassA.printC();
+        //ClassA.c = 3;
+
+        ClassA.x = 4;
+        System.out.print("c is: "); // this will trigger the static initializer block as well
+        ClassA.printC();
+
+        //ClassA ca3 = new ClassA("sup");
+        //ca3.printHello();
+
     }
 
 }
