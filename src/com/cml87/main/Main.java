@@ -6,8 +6,14 @@ class ClassA{
     static int c=-1;
     static int x;
 
+    private final int y;
+
+    { //final fields must be always initialized, so it's better to do it in an initialization block
+        y=9;
+    }
+
     static {
-        c++;
+        c=9;
         System.out.println("static initializer block run");
     }
 
@@ -43,8 +49,8 @@ public class Main {
         //ClassA.c = 3;
 
         ClassA.x = 4;
-        System.out.print("c is: "); // this will trigger the static initializer block as well
-        ClassA.printC();
+        //System.out.print("c is: "); // this will trigger the static initializer block as well
+       // ClassA.printC();
 
         //ClassA ca3 = new ClassA("sup");
         //ca3.printHello();

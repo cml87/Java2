@@ -46,10 +46,13 @@ reference type: null
 Local variables (variables defined inside a method) must be initialized before use, otherwise the compiler will not let
 us use them.
 Constants in Java are defined by means of the 'final' keyword. This keyword makes the variable's value unmodified after
-it was first set. Member variables with the 'final' modifier must be initialized either when declared or in the class
-constructor(s). Eg:
+it was first set. Member variables (fields) with the 'final' modifier must be initialized either when declared in the
+class or in initialization blocks, or in the class constructor(s). Eg:
 
 private static final int YEAR = 2000;
+
+Fields with the 'final' modifier will be constants, and it makes no sense to have a copy of them for each instance.
+Therefore they are usually also declared 'static'.
 
 In Java, an initializer is a block of code that has no associated name or data type and is placed outside of any
 method, constructor, or another block of code. There are two types of initializers: instance initializers and
@@ -71,7 +74,7 @@ These steps are preceded only by the invocation to another constructor of the cl
 instruction exists in the constructor body. If the new constructor we landed doesn't contain any this() call to another
 constructor, the mentioned steps will be executed in that order.
 
-(See Pellegrino Principe "Flusso elaborativo di creazione di un'instanza p. 262, p. 274").
+*** (See Pellegrino Principe "Flusso elaborativo di creazione di un'instanza p. 262, p. 274"). ***
 
 WE CAN COMPILE A CLASS AND THEN DECOMPILE ITS .CLASS TO SEE WHAT THE COMPILER WILL ACTUALLY UNDERSTAND FROM WHAT WE CODED !!!
 
@@ -110,6 +113,12 @@ class ClassA{
 Instance initializer blocks are very useful to isolate, and write only once, the initializations of some class fields,
 which all constructors in the class need to initialize. Without such possibility, we would need to initialize these
 field in all the constructors, thus duplicating code.
+
+A field of a class can be another class. If this class field is a class in the same package as the class were it
+figures, then we'll not need to import it; its compiled .class file will be in the same directory as that of our current
+class and both the compiler and the JVM will find it.
+
+When a class contains another class as field, we say there is a "composition" or a "has-a" relation.
 
 <<Class>>
 
@@ -183,7 +192,8 @@ class members are actually invoked by the compiler prepending "this." to the cal
 no object 'this' can refer to. For this reason we cannot use either 'this' or 'super', in a static method.
 However, constructors, which cannot be static, can access static members.
 
-Static fields can also be final.
+Static fields can also be final. Moreover, final class fields are usually declared as static, since it doesn't make sense
+to have a copy of them for each instance as they are constants.
 
 A .java file can at most contain one public class, and it must have the same name as the file.
 
@@ -290,3 +300,15 @@ class MyTime{
     }
 }
 
+<<Array of objects>>
+We declare an array of objects as
+
+MyTime[] arr = {new MyTime(2), new MyTime(5,4), new MyTime()};
+
+<<Inner Class>>
+
+A class can be declared inside another class. It will be an inner class or a nested class.
+Inner classes are:
+- non-static member classes
+- local classes
+- anonymous classes
