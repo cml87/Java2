@@ -305,10 +305,38 @@ We declare an array of objects as
 
 MyTime[] arr = {new MyTime(2), new MyTime(5,4), new MyTime()};
 
-<<Inner Class>>
+<<Nested classes>>
 
-A class can be declared inside another class. It will be an inner class or a nested class.
-Inner classes are:
-- non-static member classes
-- local classes
-- anonymous classes
+Java allows us to define classes inside other classes. Nested classes enable us to logically group classes that are
+only used in one place, write more readable and maintainable code and increase encapsulation.
+
+There are four types of nested classes available:
+- Static nested classes
+- Non-static nested classes
+- Local classes
+- Anonymous classes
+
+In general, nested classes are static or non static member classes of some enclosing class. The use of the keyword
+'static' will cause the following limitations.
+
+Static nested classes, as with static members, belong to the class, not to an specific instance. They will only access
+to other static members of the enclosing class.
+
+Non static nested classes are known as "inner classes". Just like instance variables and methods, they are associated
+with an instance of the enclosing class. They can only define non static members. They have access to all members of
+the enclosing class. To instantiate an inner class we must first instantiate it's enclosing class.
+The reference type name of an inner class must always be prepended with that of the enclosing class. Moreover, the
+constructor of the inner class can only be invoked as a "member method" of an instance of the enclosing class.
+
+class Enclosing {
+    private static final int x = 1;
+    public class Inner {
+        public void printX() {
+            System.out.println("value of x is: " + x);
+        }
+    }
+}
+//in the main()
+Enclosing e = new Enclosing();
+Enclosing.Inner ei = e.new Inner();
+ei.printX();
