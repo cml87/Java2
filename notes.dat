@@ -312,9 +312,68 @@ only used in one place, write more readable and maintainable code and increase e
 
 There are four types of nested classes available:
 - Static nested classes
-- Non-static nested classes
+- Inner class (or Non-static nested classes)
 - Local classes
 - Anonymous classes
+
+<<Inner class>>
+
+Access modifiers allowed for classes are either default or public. Both of theses give package visibility to classes.
+Also, public accessor methods (getters and setters) will give access to private fields of a class to all other classes
+in or outside the package.
+What if we want to make a class only visible to another class?
+What if we want to make a field of a class only accessible to another specific class?
+Inner classes allow these.
+- Inner classes can be hidden from other classes in the same package.
+- Inner classes can access private fields of its enclosing class, without using accessor methods.
+- Anonymous inner classes are handy when we want to define callbacks (?) without writing a lot of code.
+
+An inner class is created defining a usual class inside another normal class. This does not means that each
+instance of the outer class will have an inner class instance as a field. Instead, in the body of the methods of the
+outer class we will create an instance of the inner class as needed, invoking it's constructor with 'new'.
+
+Each instance of an outer class may have one (or more?) instance of an inner class having a reference pointing to it.
+
+An inner class will have direct access to private fields of the instance of the outer class that created it. In other
+words, an inner class method gets to access both its own data fields and those of the outer object creating it. This
+works because an object of an inner class always gets an implicit reference to the object of the outer class that
+created it.
+
+The outer class reference is set in every constructor of the inner class. The compiler modifies all inner class
+constructors, adding a parameter for the outer class reference. Then upon every call to a constructor of the inner class
+the compiler passes the 'this' reference to the instance of the outer class.
+
+Different to normal classes, inner classes can be private. In this case, only methods of the outer class would be able to
+define references of its type.
+
+Constructors of an inner class must always be invoked using a reference of the outer class. Inside methods of the outer
+class however, this can be omitted as the compiler will automatically insert 'this'. In other words, inside a method of
+the outer class
+
+MyInnerClass mic = this.new MyInnerClass();
+
+is equivalent to
+
+MyInnerClass mic = new MyInnerClass();
+
+This is how the instance of the inner class gets the reference pointing to the instance of the outer class that creates
+it.
+
+Outside the scope of the outer class however, the reference to the outer class instance must always be specified.
+Moreover, the inner class type name must be qualified with the name of the outer class in this case. For example:
+
+MyOuterClass moc = new MyOuterClass();
+MyOuterClass.MyInnerClass mic = moc.new MyInnerClass();
+
+This is because the inner class instance must know to which instance object of the outer class it will point.
+
+In order to define a reference of an inner class outside the scope of its outer class, the inner class must be public. In
+order to access the constructor of an inner class outside the scope of its outer class, the constructor must be public.
+
+An inner class can have static fields with the meaning we know. However, these must also be final.
+
+
+
 
 In general, nested classes are static or non static member classes of some enclosing class. The use of the keyword
 'static' will cause the following limitations.
