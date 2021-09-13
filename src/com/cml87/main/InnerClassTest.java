@@ -45,6 +45,11 @@ class TalkingClock {
         ActionListener listener = new TimePrinter();
         Timer t = new Timer(interval, listener);
         t.start();
+
+
+        //this constructor is private, so we can call it only from inside the outer class
+        TimePrinter tt = this.new TimePrinter(3);
+
     }
 
     // inner class
@@ -52,6 +57,7 @@ class TalkingClock {
 
         int x;
 
+        //the compiler will insert a TalkingClock reference (outer class) as a parameter for this constructor
         public TimePrinter(){
 
         }
