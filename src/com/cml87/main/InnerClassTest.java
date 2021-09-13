@@ -45,13 +45,19 @@ class TalkingClock {
         ActionListener listener = new TimePrinter();
         Timer t = new Timer(interval, listener);
         t.start();
+
+
+        //this constructor is private, so we can call it only from inside the outer class
+        TimePrinter tt = this.new TimePrinter(3);
+
     }
 
-    // inner class
+    // Inner class
     public class TimePrinter implements ActionListener{
 
         int x;
 
+        //the compiler will insert a TalkingClock reference (outer class) as a parameter for this constructor
         public TimePrinter(){
 
         }
@@ -63,7 +69,7 @@ class TalkingClock {
         public void actionPerformed(ActionEvent event){
             System.out.println("At the tone the time is "+ new Date());
             //if (TalkingClock.this.beep)
-            if (beep)
+            if (beep)   //  access to a private field of the outer class without a getter method !!
                 Toolkit.getDefaultToolkit().beep();
         }
 

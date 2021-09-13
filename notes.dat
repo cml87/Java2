@@ -316,7 +316,7 @@ There are four types of nested classes available:
 - Local classes
 - Anonymous classes
 
-<<Inner class>>
+<<Inner class>> from Horstmann 6.4.3
 
 Access modifiers allowed for classes are either default or public. Both of theses give package visibility to classes.
 Also, public accessor methods (getters and setters) will give access to private fields of a class to all other classes
@@ -372,7 +372,19 @@ order to access the constructor of an inner class outside the scope of its outer
 
 An inner class can have static fields with the meaning we know. However, these must also be final.
 
+An inner class is a thing of the compiler, not the JVM. Once compiled, an inner class will have a .class file name like
+MyOuterClass$MyInnerClass.class. If we decompile it ( javap -private MyOuterClass\$MyInnerClass) we will see a field of
+a reference to the outer class, as well as all constructor named after the .class file mentioned and having a parameter
+of the outer class.
 
+Moreover, if the compiler notice a method of the inner class is accessing a private field of the outer class, it will
+automatically insert a public static getter method for the inner class to use it to get the private field.
+We can see this method decompiling the outer class (javap -private TalkingClock). It will be named something like
+access0$(OuterClass). This rises some security issues as a malicious .class file with the proper JVM instructions added
+to the same package as the outer class, will be able to call this method as well, to get access to the private field.
+We would need JVM instructions since access$0 is not a valid Java method name we can use in a normal .java file.
+
+A private constructor in the inner class give place to other compiler creative artifacts (see Horstmann 6.4.3 end).
 
 
 In general, nested classes are static or non static member classes of some enclosing class. The use of the keyword
