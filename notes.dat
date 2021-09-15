@@ -406,9 +406,51 @@ all fields of the enclosing method the inner class happens to use. Then the comp
 local inner class to receive values for these fields as parameters as well, so it can set them upon a call to the a
 constructor.
 
+<<Anonymous inner classes>>
 When using local inner classes we can go one step further: if we need to instantiate only one object of the local inner
-class we don't even need to give the class a name. This gives place to anonymous classes, which are local inner classes
-without a name (anonymous).
+class we don't even need to give the class a name. This gives place to anonymous classes, which actually are local
+inner classes without a name (anonymous).
+
+In Java we can instantiate objects from classes that implement one or more interfaces and/or extend one class. If the
+class from which we want to instantiate the object will simply either implement one interface or extend another class,
+and we only need one instance of such class, we actually don't need to give a name to this class. We can instantiate the
+the object on-the-fly while defining the class body, using only the interface or class name.
+
+The syntax is:
+SuperTypeA obj = new SuperTypeB(construction parameters){
+    //inner class methods and data
+};
+
+In the right member SuperTypeB will be either an interface or a super class. If it is an interface, we'll be
+instantiating an object of a class without name that implements this interface. In this case we'll implement the
+required methods in the body and will leave the "construction parameters" empty. If it is a superclass, we'll
+be instantiating an object of a class without name extending it, an we'll pass the arguments for the constructor of
+this superclass in the "constructor parameters".
+
+In the left member, SuperTypeA is just an assignment compatible reference. Thus, it can be the same superclass or
+interface we are using to define the inner class and instantiate an object from it.
+
+We should pay attention to the differences between instantiating an object from a class and instantiating an object
+from an anonymous class extending that class. The syntax is very similar:
+
+Person queen = new Person("Mary"); // a Person object
+Person queen = new Person("Mary") { . . . };// an object of an inner class extending Person
+
+An equals() method should check for the differences between an object of a class and an object instantiated from a
+subclass of this class; we should do:
+
+if (getClass() != other.getClass()) return false;
+
+
+
+For many years, Java programmers routinely used anonymous inner classes for event listeners and other callbacks.
+Nowadays, you are better off using a lambda expression (?).
+
+
+An anonymous inner class cannot have constructors because the name of a constructor must be the same as the name of a
+class, and the class has no name. Instead, the construction parameters are given to the superclass constructor.
+
+
 
 
 
