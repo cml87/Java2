@@ -14,11 +14,7 @@ public class InnerClassTest {
         TalkingClock clock = new TalkingClock(1000, true);
         clock.start();
 
-        TalkingClock.TimePrinter tp;  //the inner class is public, so I can call it here
-        tp = clock.new TimePrinter();  //this constructor is public, so I can call it here
-        //tp = clock.new TimePrinter(2);// this constructor is private, so I cannot call it here
-
-        //keep the program running until user selects "OK"
+       //keep the program running until user selects "OK"
         JOptionPane.showMessageDialog(null, "Quit program?");
         System.exit(0);
 
@@ -41,32 +37,34 @@ class TalkingClock {
     }
 
     public void start(){
+
+        // local inner class
+        class TimePrinter implements ActionListener{
+            int x;
+            //the compiler will insert a TalkingClock reference (outer class) and a 'beep' field for all constructors of
+            // this inner class
+            public TimePrinter(){}
+
+            private TimePrinter(int x){ this.x=x;  }
+
+            public void actionPerformed(ActionEvent event){
+                System.out.println("At the tone the time is "+ new Date());
+
+                // access to a private field of the outer class instance that creates this instance,
+                // without a getter method !!
+                if (TalkingClock.this.beep)
+                //if (beep)
+                    Toolkit.getDefaultToolkit().beep();
+            }
+        }
+
         //ActionListener listener = this.new TimePrinter();
         ActionListener listener = new TimePrinter();
         Timer t = new Timer(interval, listener);
         t.start();
 
-
-        //this constructor is private, so we can call it only from inside the outer class
-        TimePrinter tt = this.new TimePrinter(3);
-
     }
 
 
-    // Inner class
-    public class TimePrinter implements ActionListener{
-        int x;
-        //the compiler will insert a TalkingClock reference (outer class) as a parameter for this constructor
-        public TimePrinter(){}
 
-        private TimePrinter(int x){ this.x=x;  }
-
-        public void actionPerformed(ActionEvent event){
-            System.out.println("At the tone the time is "+ new Date());
-            //if (TalkingClock.this.beep)
-            if (beep)   //  access to a private field of the outer class instance that creates this instance,
-                        // without a getter method !!
-                Toolkit.getDefaultToolkit().beep();
-        }
-    }
 }
