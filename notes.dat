@@ -310,7 +310,7 @@ MyTime[] arr = {new MyTime(2), new MyTime(5,4), new MyTime()};
 Java allows us to define classes inside other classes. Nested classes enable us to logically group classes that are
 only used in one place, write more readable and maintainable code and increase encapsulation.
 
-There are four types of nested classes available:
+There are four types of nested classes in Java:
 - Static nested classes
 - Inner class (or Non-static nested classes)
 - Local classes
@@ -357,10 +357,9 @@ is equivalent to
 MyInnerClass mic = new MyInnerClass();
 
 This is how the instance of the inner class gets the reference pointing to the instance of the outer class that creates
-it.
-
-Outside the scope of the outer class however, the reference to the outer class instance must always be specified.
-Moreover, the inner class type name must be qualified with the name of the outer class in this case. For example:
+it. Nevertheless, outside the scope of the outer class, the reference to the outer class instance must always be
+specified when instantiating an the inner class with new. Moreover, the inner class type name must be qualified with
+the name of the outer class in this case. For example:
 
 MyOuterClass moc = new MyOuterClass();
 MyOuterClass.MyInnerClass mic = moc.new MyInnerClass();
@@ -370,7 +369,25 @@ This is because the inner class instance must know to which instance object of t
 In order to define a reference of an inner class outside the scope of its outer class, the inner class must be public. In
 order to access the constructor of an inner class outside the scope of its outer class, the constructor must be public.
 
-An inner class can have static fields with the meaning we know. However, these must also be final.
+Here is another example:
+
+class Enclosing {
+    private static final int x = 1;
+
+    // an inner class accessing static members of its outer class directly
+    public class Inner {
+        public void printX() {
+            System.out.println("value of x is: " + x);
+        }
+    }
+}
+//in the main()
+Enclosing e = new Enclosing();
+Enclosing.Inner ei = e.new Inner();
+ei.printX();
+
+An inner class can have static fields with the meaning we know. However, these must also be explicitly final.
+An inner class cannot contain static methods.
 
 An inner class is a thing of the compiler, not the JVM. Once compiled, an inner class will have a .class file name like
 MyOuterClass$MyInnerClass.class. If we decompile it ( javap -private MyOuterClass\$MyInnerClass) we will see a field of
@@ -441,42 +458,43 @@ subclass of this class; we should do:
 
 if (getClass() != other.getClass()) return false;
 
-
-
 For many years, Java programmers routinely used anonymous inner classes for event listeners and other callbacks.
 Nowadays, you are better off using a lambda expression (?).
-
 
 An anonymous inner class cannot have constructors because the name of a constructor must be the same as the name of a
 class, and the class has no name. Instead, the construction parameters are given to the superclass constructor.
 
+<<static inner class>>
+If we want an inner class that doesn't keep a reference to the outer class, we can declare the inner class static.
+Static inner classes are therefore independent of the outer class. We can create as many instances of a static inner
+class as we want, without referring to any particular instance of the outer class. As a result, static inner classes
+will have direct access to only static variables and methods of the outer class. To access non static members of the
+outer class, an object of the outer class will need to be instantiated.
+
+From static or non static methods of the outer class, all members of the static inner class will be accessible (static
+members using the inner class name, and non static members using an instance of the inner class).
+
+From static or non static methods of the inner class, non static methods of the outer class will be accessible with an
+object reference as usual, whereas static methods will be accessible only from static methods (of the inner class).
+
+One case where we must use static inner classes is when a static method of an outer class wants to create an instance
+of an inner class: in this case that inner class must be static as well. If the static method of the outer class returns
+an instance of the static inner class, we are in front of a common use case.
+
+From outside the outer class, static inner classes are like any other class. They just get their name prepended
+(qualified with) the name of the outer class everywhere we use it, ie.:
+
+MyOuterClass.MyInnerClass mioc;  //ok if both the outer and the static inner class are public
+mioc = new MyOuterClass.MyInnerClass(); //ok if the constructor of the inner class is public
+
+Therefore, we can use static inner classes just to make evident the "context" (the outer class) to which we mean that
+class belong.
 
 
 
 
 
-In general, nested classes are static or non static member classes of some enclosing class. The use of the keyword
-'static' will cause the following limitations.
 
-Static nested classes, as with static members, belong to the class, not to an specific instance. They will only access
-to other static members of the enclosing class.
 
-Non static nested classes are known as "inner classes". Just like instance variables and methods, they are associated
-with an instance of the enclosing class. They can only define non static members. They have access to all members of
-the enclosing class. To instantiate an inner class we must first instantiate it's enclosing class.
-The reference type name of an inner class must always be prepended with that of the enclosing class. Moreover, the
-constructor of the inner class can only be invoked as a "member method" of an instance of the enclosing class.
 
-class Enclosing {
-    private static final int x = 1;
-    public class Inner {
-        public void printX() {
-            System.out.println("value of x is: " + x);
-        }
-    }
-}
-//in the main()
-Enclosing e = new Enclosing();
-Enclosing.Inner ei = e.new Inner();
-ei.printX();
 
