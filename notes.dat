@@ -311,8 +311,8 @@ Java allows us to define classes inside other classes. Nested classes enable us 
 only used in one place, write more readable and maintainable code and increase encapsulation.
 
 There are four types of nested classes in Java:
-- Static nested classes
-- Inner class (or Non-static nested classes)
+- static nested classes
+- non-static nested classes (or inner class)
 - Local classes
 - Anonymous classes
 
@@ -323,6 +323,8 @@ Also, public accessor methods (getters and setters) will give access to private 
 in or outside the package.
 What if we want to make a class only visible to another class?
 What if we want to make a field of a class only accessible to another specific class?
+What if we want to make clear that a class reference name belongs, or is "contextualized", to another class?
+
 Inner classes allow these.
 - Inner classes can be hidden from other classes in the same package.
 - Inner classes can access private fields of its enclosing class, without using accessor methods.
@@ -331,6 +333,8 @@ Inner classes allow these.
 An inner class is created defining a usual class inside another normal class. This does not means that each
 instance of the outer class will have an inner class instance as a field. Instead, in the body of the methods of the
 outer class we will create an instance of the inner class as needed, invoking it's constructor with 'new'.
+
+An outer class may define one or more inner classes in its body.
 
 Each instance of an outer class may have one (or more?) instance of an inner class having a reference pointing to it.
 
@@ -343,12 +347,13 @@ The outer class reference is set in every constructor of the inner class. The co
 constructors, adding a parameter for the outer class reference. Then upon every call to a constructor of the inner class
 the compiler passes the 'this' reference to the instance of the outer class.
 
-Different to normal classes, inner classes can be private. In this case, only methods of the outer class would be able to
-define references of its type.
+"Top level classes" (i.e. not nested classes) can only have access modifiers default or public (other modifiers are
+abstract, final and strictfp). Inner classes in turn can also be private or protected. When they are private, only
+methods of the outer class would be able to define references of its type.
 
 Constructors of an inner class must always be invoked using a reference of the outer class. Inside methods of the outer
-class however, this can be omitted as the compiler will automatically insert 'this'. In other words, inside a method of
-the outer class
+class however, this can be omitted as the compiler will automatically insert a 'this'. In other words, inside a method
+of the outer class
 
 MyInnerClass mic = this.new MyInnerClass();
 
@@ -356,8 +361,27 @@ is equivalent to
 
 MyInnerClass mic = new MyInnerClass();
 
+
+
 This is how the instance of the inner class gets the reference pointing to the instance of the outer class that creates
-it. Nevertheless, outside the scope of the outer class, the reference to the outer class instance must always be
+it. Thanks to this, we have that inside a method of the inner class, when accessing a field 'x' of the outer class,
+the statement
+
+if (x == 3)
+    //...
+
+is equivalent to
+
+if (MyOuterClass.this.x == 3)
+    //...
+
+To avoid identifiers shadowing between the inner and the outer class, if the inner class also have a field called 'x',
+we would do
+
+if (this.x == MyOuterClass.this.x)
+    //...
+
+Outside the scope of the outer class, nevertheless, the reference to the outer class instance must always be
 specified when instantiating an the inner class with new. Moreover, the inner class type name must be qualified with
 the name of the outer class in this case. For example:
 
@@ -366,8 +390,9 @@ MyOuterClass.MyInnerClass mic = moc.new MyInnerClass();
 
 This is because the inner class instance must know to which instance object of the outer class it will point.
 
-In order to define a reference of an inner class outside the scope of its outer class, the inner class must be public. In
-order to access the constructor of an inner class outside the scope of its outer class, the constructor must be public.
+In order to define a reference of an inner class outside the scope of its outer class, the inner class must be public.
+In order to access the constructor of an inner class outside the scope of its outer class, the constructor must be
+public.
 
 Here is another example:
 
@@ -387,7 +412,7 @@ Enclosing.Inner ei = e.new Inner();
 ei.printX();
 
 An inner class can have static fields with the meaning we know. However, these must also be explicitly final.
-An inner class cannot contain static methods.
+An inner class cannot contain static methods or initializers.
 
 An inner class is a thing of the compiler, not the JVM. Once compiled, an inner class will have a .class file name like
 MyOuterClass$MyInnerClass.class. If we decompile it ( javap -private MyOuterClass\$MyInnerClass) we will see a field of
@@ -408,20 +433,39 @@ class that creates them. From the body of the outer class, the reference name an
 can be accessed directly. For access from the outside the body of the outer class, these things must have the proper
 access modifiers as we know, and need to be qualified as mentioned above.
 
+In general, all inner classes of an outer class are defined private, because they are meant to be used only from the
+scope of the outer class. A typical use case is that of a public outer class with many private inner classes, each
+accomplishing a particular task. Client code will create instances of the inner classes, or access their services,
+only through public methods of the outer class. I think we can make the inner classes implement some public interfaces
+so we can reference their objects outside the scope of the outer class.
+
+Inner classes can also be declared inside an interface, in which case they will be implicitly static ???.
+In general, Java supports nesting a class or an interface inside another class or interface. An inner class inside an
+interface will be implicitly static. An inner interface inside a class or an interface will be implicitly static. In
+general, when some member class or interface is static, it is called "nested", not inner.
+
 <<Local inner classes>>
 Private inner classes are accessible/visible only from the body of the outer class. We can restrict even more the access
 and define the class inside a method of the outer class. This would be a local inner class. This make sense when an
 inner class (reference name) is only used inside a method of the outer class.
 
 Local inner classes do not support any access modifier and are accessible only from the scope of the method where they
-are defined. Not even other methods of the same class can access the local inner class.
+are defined. Not even other methods of the same class can access the local inner class. They can't be static either.
 
-Besides the private fields of the outer class, local inner classes can also access the local variables of the method
+Local inner classes have direct access to private fields of the enclosing class. For those fields of the outer class
+that are static, it will suffice to access them qualifying with the outer class name.
+
+Besides, local inner classes can also access the local variables of the method
 where they are defined, including the method's parameters, provided they are effectively final. This is possible because
 the compiler will insert in the body of the inner class, as final fields, a reference to the outer class as well as
 all fields of the enclosing method the inner class happens to use. Then the compiler will set all constructors of the
 local inner class to receive values for these fields as parameters as well, so it can set them upon a call to the a
 constructor.
+
+If the method enclosing the local class is static, the local class will not have access to non-static members of the
+enclosing class (not tested by me yet).
+
+If the method enclosing a local inner class is non-static, the local inner class cannot have a static initializer.
 
 <<Anonymous inner classes>>
 When using local inner classes we can go one step further: if we need to instantiate only one object of the local inner
@@ -471,6 +515,8 @@ class as we want, without referring to any particular instance of the outer clas
 will have direct access to only static variables and methods of the outer class. To access non static members of the
 outer class, an object of the outer class will need to be instantiated.
 
+Static inner classes are called "nested classes" in Java.
+
 From static or non static methods of the outer class, all members of the static inner class will be accessible (static
 members using the inner class name, and non static members using an instance of the inner class).
 
@@ -490,6 +536,8 @@ mioc = new MyOuterClass.MyInnerClass(); //ok if the constructor of the inner cla
 Therefore, we can use static inner classes just to make evident the "context" (the outer class) to which we mean that
 class belong.
 
+Static nested classes support all access modifiers default, private, public, and protected. Other modifiers they support
+are abstract, final and strictfp.
 
 
 
