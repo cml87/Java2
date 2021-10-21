@@ -8,6 +8,11 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.Timer;
 
+
+final class OS extends Enum<OS>{
+
+}
+
 public class StaticInnerClassTest {
 
     public static void main(String[] args) {

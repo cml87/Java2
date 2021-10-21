@@ -23,8 +23,10 @@ constructor either, not even that inserted by the compiler by default.
 The default (parameterless) constructor inserted by the compiler will have the same access modifier as its class.
 
 Every constructor that doesn't call another constructor in the same class (using this(...) ) has a call to its parent
-constructor, whether it was written explicitly or inserted by the compiler through super(). Similarly, if a class does not
-explicitly extends another class, the compiler makes it extend class "Object".
+constructor as super(), (ie. the parameterless constructor of the super class), whether it was written explicitly or
+inserted by the compiler. If the parameterless constructor of the super class is not accessible, eg. it is provate,
+we'll get an error.
+Similarly, if a class does not explicitly extends another class, the compiler makes it extend class "Object".
 
 Constructors in a class need to have the appropriate access modifiers (as for member methods, public,protected, private,
 default) if we want to instantiate
@@ -541,6 +543,9 @@ are abstract, final and strictfp.
 
 
 
+<<Enum>>
+When we declare an enum, we are declaring a new type as well as all the instances that that type will be allowed to
+have. We are also declaring the reference names that will point to those instances.
 
 
 
