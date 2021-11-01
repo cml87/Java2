@@ -545,9 +545,56 @@ are abstract, final and strictfp.
 
 <<Enum>>
 When we declare an enum, we are declaring a new type as well as all the instances that that type will be allowed to
-have. We are also declaring the reference names that will point to those instances.
+point to. We are also declaring the reference names that will point to those instances. The type will be called an enum
+type, and the instances will be called enum constants. For these reasons, an enum is a special type of class, but in
+must other aspects, an enum behaves as a normal class.
 
+In the example below, the type is "MONTH" and the instances it may point to are referenced by MONTH.JANUARY, 
+MONTH.FEBRUARY etc.
 
+Enums are used to encapsulate sets of correlated constants (we don't put 'dog' in a set containing months names), while
+allowing for a name for each of them. This greatly improve code
+readability in those cases where otherwise an array of Strings, for example, would most probably be used. For example,
+compare
+
+String[] months = {"January", "February", "March"};
+//in the main
+String currentMonth = months[2]; // '2' is called a magic number.
+
+vs
+
+enum Months { //enum constants must always be written first
+    JANUARY("Enero"),  //this will be the instances of the enum. We declare them and call the enum's constructor on the
+    FEBRUARY("Febrero"),  //spot
+    MARCH("Marzo"); //the ';' is needed only when we define a body for each enum constant,
+                    // as in this example
+
+    private final String spanishName;
+
+    //constructor
+    Months(String spanishName) {this.spanishName = spanishName}
+
+    //instance initializers (example ?)
+    //static initializers  (example ?)
+
+    public String getSpanishName(){return spanishName;}
+}
+//in the main
+Months currentMonth = Months.MARCH; // '2' is called a magic number.
+
+Modifiers for enums can be public, protected, private, static and strictfp (same as classes?). Enums can implement
+interfaces but cannot extend classes. Enums cannot be extended, except when there is at least one enum constant with
+body ?.
+
+Enums are implicitly static if nested as a member of another type.
+
+Enum constants do not support any modifiers but annotations.
+
+Enum constants can have a body with typical class members; the body will define an anonymous class.
+
+Enum constants cannot be casted to int. Instead we use a method...
+...
+For the compiler, enums are are common classes that extend class Enum<E> of package java.lang. 
 
 
 
