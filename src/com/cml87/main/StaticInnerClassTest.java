@@ -59,7 +59,8 @@ public class StaticInnerClassTest {
         Object o = Months.MARCH;
 
         System.out.println(currentMonth.equals(o));
-        System.out.println("enum pointed to by reference 'currentMonth' has name is: "+currentMonth.name());
+        System.out.println("enum pointed to by reference 'currentMonth' has name is: "+currentMonth.name()
+                + " - "+currentMonth.toString());
 
 
     }

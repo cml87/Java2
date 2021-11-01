@@ -590,29 +590,28 @@ Enums are implicitly static if nested as a member of another type.
 
 Enum constants do not support any modifiers but annotations.
 Enum constants can have a body with typical class members; the body will define an anonymous class.
-Enum constants cannot be casted to int. Instead we use a method...
+Enum constants cannot be casted to int. Instead we use a method inherited method ordinal() (see below).
 
 When used in switch statements, we use in the switch expression an enum reference type (identifier), and in the case
 expressions the unqualified enum constant names.
 
-...
-For the compiler, enums are are common classes that extend class Enum<E> of package java.lang. In the class of an enum,
+For the compiler, enums are common classes that extend class Enum<E> of package java.lang. In the class of an enum,
 the compiler will include the following static methods (see the decompiled of the .class of any enum)
 - values(): Returns the enum constants in an array. Eg Months[] allMonths = Months.values();
    for (i: 0 .. allMonths.length )
         months[i].toString()
 - valueOf(String): Given the name of an enum constant as a String (case sensitive), returns it.
 
-In addition, thanks to the inheritance from  Enum<E>, each enum will have the instance methods
+In addition, thanks to the inheritance from  Enum<E>, each enum will have the instance methods:
 - toString(): Calling .toString() on an enum reference, returns the pointed to enum constant name as a String.
 - public final int ordinal(): returns the ordinal position of the current enum constant, according to its position in
   the list of enum constants, in the enum declaration. Zero start.
 - public final int compareTo(E e): returns -1, 0, or 1 if the current enum constants has an ordinal position lower,
   equal, or greater than e, respectively. Both constants must be part of the same enumeration, of course.
-- public final boolean equals(Object o): Compare the memory address of the current enum constant with that of o. Of
+- public final boolean equals(Object o): Compare the memory addresses of the current enum constant with that of o. Of
   course, both must be part of the same enum. It is equivalent to using ==.
 - public final String name(): Returns the name, as a String, of the current enum constant, as it appears in the enum
-  definition.
+  definition. Equivalent to toString().
 
 To see how an enum is a common class extending Enum<T> for the compiler, we can examine the decompiled of the .class of
 any enum.
