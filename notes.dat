@@ -615,3 +615,57 @@ In addition, thanks to the inheritance from  Enum<E>, each enum will have the in
 
 To see how an enum is a common class extending Enum<T> for the compiler, we can examine the decompiled of the .class of
 any enum.
+
+Upcasting and method overriding
+
+Upcasting occurs when we ask Java to give us a reference of a superclass type from a reference of a subclass type. It occurs automatically and never
+throws an exception. Suppose we have a scenario with two classes A <- B, ie. A is a supeclass of B. The following is an example of upcasting:
+
+A a = new B();
+or
+A a = b;  // b point to an object of type B
+
+Upcasting occurs automatically, so we don't need to make it explicit by specifying the type of the new reference we want to get. In other words, we don't
+need to do in the example above:
+
+A a = (A) new B();
+or
+A a = (A) b;  // b point to an object of type B
+
+In this example, the right member here will return a reference of type B, to an object of type B too. Since we want to assign it to a reference to the superclass type,
+upcasting is needed. I think upcasting will actually return a _new_ reference pointing to the same object, but of the superclass type.
+
+Even though the reference of the superclass type will be pointing to the same object as the subclass type, two important distinctions should be made:
+1. The methods we'll be able to call after with the superclass reference type, will be those of the superclass type only, even though that reference is
+   pointing to an object of the subclass type. Methods of the subclass type only, will not be accessible with the superclass reference.
+2. The version of the method effectively called will be that on the superclass type, if not overridden in the subclass, or the overridden subclass
+   version otherwise.
+
+Downcasting and instanceof()
+
+Downcasting is the opposite of upcasting. Namely, downcasting occurs when we ask Java to give us a reference of a subclass type from a reference of a
+superclass type:
+
+B b = (B) a; // a is a reference previously declared and pointing to some assignment compatible object
+
+In this case, we do need to specify Java the new reference type we want to get in the downcasting process. The important point to be considered here is
+ the fallowing: At compile time, Java will only check that in the right member, the downcasting target class (in the example above B), is a subclass of
+ the class of the reference being downcasted (in the example above, a). This check will not be enough to avid errors at run time though. The reason is that
+ at runtime, the reference being downcasted may be pointing to other subclass objects, not of type B, which, in the case of the example above will give
+ us an error, more specifically a downcasting error (put exception here). To keep us from this error it is recommended to always use the instanceof clause
+ when performing downcasting in our code. This clause check if at runtime the object pointed to by the reference being downcasted is assignment compatible
+ with the target downcast type. In the example above we should therefore do:
+
+ if (a instance of B)
+    B b = (B) a;
+
+
+Downcasting allows overcoming the limitation in point 1. discussed above for upcasting. Namely, if we have a reference of a superclass type, and we are
+sure it is pointing to an object of a given subclass type (by making use of instanceof), we can do a downcasting to get a reference of that subclass type
+an then invoke any method in the sublcass type. Suppose a is pointing to an object of type B. What we said means:
+
+a.methodOfClassBonly(); // error, not allowed
+((B)a).methodOfClassBonly(); // allowed !
+
+
+
